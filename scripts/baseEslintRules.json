@@ -1,0 +1,124 @@
+{
+  "no-nested-ternary": "off",
+  "no-shadow": "off",
+  "max-lines": [
+    "error",
+    480
+  ],
+  "quotes": [
+    "error",
+    "single",
+    "avoid-escape"
+  ],
+  "jsx-quotes": [
+    "error",
+    "prefer-double"
+  ],
+  "@typescript-eslint/type-annotation-spacing": [
+    "error"
+  ],
+  "indent": "off",
+  "@typescript-eslint/indent": [
+    "error",
+    2,
+    {
+      "SwitchCase": 1,
+      "VariableDeclarator": 1,
+      "MemberExpression": "off",
+      "ObjectExpression": 1,
+      "ArrayExpression": 1
+    }
+  ],
+  "react/jsx-max-props-per-line": [
+    "error",
+    {
+      "maximum": {
+        "multi": 1,
+        "single": 3
+      }
+    }
+  ],
+  "react/jsx-first-prop-new-line": [
+    "error",
+    "multiline"
+  ],
+  "react/jsx-key": [
+    "error"
+  ],
+  "react/jsx-indent-props": [
+    "error",
+    {
+      "indentMode": 2,
+      "ignoreTernaryOperator": true
+    }
+  ],
+  "semi": [
+    "error",
+    "never"
+  ],
+  "import/prefer-default-export": "off",
+  "no-use-before-define": "off",
+  "no-unused-vars": "off",
+  "@typescript-eslint/no-unused-vars": [
+    "error",
+    {
+      "argsIgnorePattern": "^_",
+      "varsIgnorePattern": "^[_ITE]"
+    }
+  ],
+  "no-undef": "off",
+  "max-len": [
+    "error",
+    {
+      "code": 160,
+      "comments": 256
+    }
+  ],
+  "no-console": [
+    "warn"
+  ],
+  "comma-dangle": [
+    "error",
+    {
+      "objects": "always-multiline",
+      "imports": "always-multiline",
+      "exports": "always-multiline",
+      "arrays": "always-multiline",
+      "functions": "never"
+    }
+  ],
+  "import/extensions": [
+    "error",
+    {
+      "ts": "never",
+      "tsx": "never",
+      "js": "never",
+      "jsx": "never",
+      "json": "always"
+    }
+  ],
+  "import/no-unresolved": [
+    "error",
+    {
+      "ignore": [
+        "^@\\/.*"
+      ]
+    }
+  ],
+  "no-return-await": "off",
+  "class-methods-use-this": "off",
+  "import/no-extraneous-dependencies": "off",
+  "react-hooks/exhaustive-deps": "off",
+  "lines-between-class-members": "off",
+  "react/sort-comp": [
+    "warn",
+    {
+      "order": [
+        "instance-variables",
+        "lifecycle",
+        "everything-else",
+        "render"
+      ]
+    }
+  ]
+}
