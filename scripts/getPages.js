@@ -8,6 +8,13 @@ const path = require('path')
 function main(targetDir) {
   const pagePath = targetDir
   const rs = []
+  // TODO: support common global chunk
+  // rs.push({
+  //   name: 'global',
+  //   entry: fs.existsSync(path.resolve(pagePath, 'global.ts'))
+  //     ? path.resolve(pagePath, 'global.ts')
+  //     : path.resolve(__dirname, 'templates/defaultGlobal.ts'),
+  // })
   fs.readdirSync(pagePath).forEach((name) => {
     if (fs.lstatSync(path.resolve(pagePath, name)).isDirectory()) {
       const basePath = path.resolve(pagePath, name)
@@ -35,8 +42,8 @@ function main(targetDir) {
       rs.push({
         name,
         filename: `${name}.html`,
-        entry: entryFile ? path.resolve(basePath, entryFile) : path.resolve(pagePath, 'defaultEntry.ts'),
-        template: templateFile ? path.resolve(basePath, templateFile) : path.resolve(pagePath, 'defaultTemplate.html'),
+        entry: entryFile ? path.resolve(basePath, entryFile) : path.resolve(__dirname, './templates/defaultEntry.ts'),
+        template: templateFile ? path.resolve(basePath, templateFile) : path.resolve(__dirname, './templates/htmlEntry.html'),
       })
     }
   })

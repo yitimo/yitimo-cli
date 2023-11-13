@@ -12,12 +12,18 @@ function copyFile(file, location) {
 }
 
 module.exports = {
+  /**
+   *
+   * @returns {ReturnType<typeof import('./rcBuilder').buildYcliRC>}
+   */
   getAppConfig() {
     try {
       let configPath = null
       if (fs.existsSync(path.resolve('appconfig.json'))) {
+        // eslint-disable-next-line import/no-dynamic-require, global-require
         configPath = require(path.resolve('appconfig.json'))
       } else if (fs.existsSync(path.resolve('.appconfigrc.js'))) {
+        // eslint-disable-next-line import/no-dynamic-require, global-require
         configPath = require(path.resolve('.appconfigrc.js'))
       }
       if (!configPath) {
@@ -72,18 +78,24 @@ module.exports = {
    * @param {*} targetDir
    * @param {'merge'|'clean'|'drop'} action
    */
-  stashDist(dir, action, options = {}) {
+  stashDist(dir, action, _options = {}) {
+    const tempDir = path.resolve(`${dir}.temp`)
+    const targetDir = path.resolve(dir)
     switch (action) {
       case 'merge':
-        console.log('merge dir', `from ${path.resolve(`${dir}.temp`)} to ${path.resolve(dir)}`)
-        mergeDir(path.resolve(`${dir}.temp`), path.resolve(dir))
+        if (!fs.existsSync()) {
+          console.log('merge dir', `but temp dir(${tempDir}) not exists, skipped`)
+          return
+        }
+        console.log('merge dir', `from ${tempDir} to ${targetDir}`)
+        this.mergeDir(tempDir, targetDir)
         return
       case 'drop':
-        console.log('drop dir', `from ${path.resolve(`${dir}.temp`)} to void`)
-        rimraf.sync(path.resolve(`${dir}.temp`))
+        console.log('drop dir', `from ${tempDir} to void`)
+        rimraf.sync(tempDir)
         return
       default:
-        throw new Error(`未知的操作: ${action}`)
+        throw new Error(`unknown action for stashDist: ${action}`)
     }
   },
   mergeDir(src, dest) {
@@ -92,7 +104,7 @@ module.exports = {
       const srcFile = `${src}/${file}`
       const destFile = `${dest}/${file}`
       const stats = fs.lstatSync(srcFile)
-  
+
       if (stats.isDirectory()) {
         this.mergeDirs(srcFile, destFile)
         return

@@ -2,11 +2,12 @@
   "name": "@yitimo/cli",
   "version": "1.0.0-alpha.2",
   "description": "",
-  "main": "index.js",
   "bin": {
     "ycli": "./bin/ycli.js"
   },
   "scripts": {
+    "demo:serve": "node ./bin/ycli.js serve",
+    "demo:build": "node ./bin/ycli.js build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

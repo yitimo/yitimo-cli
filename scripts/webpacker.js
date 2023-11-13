@@ -2,27 +2,30 @@ const path = require('path')
 const fs = require('fs')
 const webpack = require('webpack')
 const WebpackDevServer = require('webpack-dev-server')
+const { rimraf } = require('rimraf')
 const utils = require('./utils')
 const buildWebpackConfig = require('./buildWebpackConfig')
 const getPages = require('./getPages')
 
-const pages = getPages('pages')
-const pagePath = 'pages'
+const appConfig = utils.getAppConfig()
+
+const pages = getPages(appConfig.pagesDir)
 
 module.exports = {
   build() {
-    utils.stashDist('dist', 'drop')
-    const config = buildWebpackConfig({ isProd: true, pages, pagePath })
+    rimraf.sync(appConfig.outputDir)
+    // utils.stashDist(appConfig.outputDir, 'drop')
+    const config = buildWebpackConfig({ isProd: true, pages })
     const webpackInstance = webpack(config, (a, b) => {
       if (a || b.hasErrors()) {
         if (a) {
           console.warn('build failed', a.message)
-          utils.stashDist('dist', 'drop')
+          utils.stashDist(appConfig.outputDir, 'drop')
           process.exit(1)
           return
         }
         console.warn('build failed', b.toString())
-        utils.stashDist('dist', 'drop')
+        utils.stashDist(appConfig.outputDir, 'drop')
         process.exit(1)
       }
     })
@@ -33,17 +36,19 @@ module.exports = {
     webpackInstance.hooks.afterDone.tap('Compile', () => {
       process.stdout.write('\r\x1b[K')
       process.stdout.write('[production]Compile finished')
-      console.log('[production]output to dist')
-      utils.stashDist('dist', 'merge')
-      console.log('[production]clean dist.temp')
-      utils.stashDist('dist', 'drop')
+      console.log('\n')
+      // TODO: support build some pages, then merge to exists
+      // console.log('[production]output to dist')
+      // utils.stashDist(appConfig.outputDir, 'merge')
+      // console.log('[production]clean dist.temp')
+      // utils.stashDist(appConfig.outputDir, 'drop')
     })
     webpackInstance.run(() => {
       // log sth when building :)
     })
   },
   serve() {
-    const config = buildWebpackConfig({ isProd: false, pages, pagePath })
+    const config = buildWebpackConfig({ isProd: false, pages })
     const webpackInstance = webpack(config)
     webpackInstance.hooks.beforeCompile.tap('Compile', () => {
       process.stdout.write('\r\x1b[K')

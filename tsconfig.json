@@ -1,0 +1,9 @@
+{
+    "extends": "./scripts/baseTsconfig.json",
+    "compilerOptions": {
+        "baseUrl": "./demo",
+    },
+    "include": [
+        "./demo"
+    ]
+}

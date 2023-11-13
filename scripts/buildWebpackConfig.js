@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs')
 const webpackMerge = require('webpack-merge').merge
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -6,11 +7,13 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const EslintWebpackPlugin = require('eslint-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
+const utils = require('./utils')
+
+const appConfig = utils.getAppConfig()
 
 function generateBaseConfig(options) {
   const {
     isProd,
-    pagePath,
     pages,
   } = options
   /** @type {import('webpack').Configuration} */
@@ -21,11 +24,10 @@ function generateBaseConfig(options) {
       modules: ['node_modules'],
     },
     output: {
-      path: path.resolve('dist'),
+      path: path.resolve(appConfig.outputDir),
       hashDigestLength: 8,
     },
     entry: {
-      global: path.resolve(`${pagePath}/global.ts`),
       ...pages.reduce((r, n) => ({ ...r, [n.name]: n.entry }), {}),
     },
     module: {
@@ -108,17 +110,17 @@ function generateBaseConfig(options) {
       ...pages.map((page) => new HtmlWebpackPlugin({
         template: page.template,
         filename: page.filename,
-        chunks: ['global', page.name],
+        chunks: [page.name],
         minify: false,
         inject: 'body',
       })),
       new EslintWebpackPlugin(),
       new VueLoaderPlugin(),
-      new CopyWebpackPlugin({
+      ...(fs.existsSync(path.resolve(appConfig.publicDir)) ? [new CopyWebpackPlugin({
         patterns: [
           {
-            from: path.resolve('public'),
-            to: 'static',
+            from: path.resolve(appConfig.publicDir),
+            to: '.',
             filter(name) {
               if (name.endsWith('.gitkeep')) {
                 return false
@@ -127,7 +129,7 @@ function generateBaseConfig(options) {
             },
           },
         ],
-      }),
+      })] : []),
     ],
   }
   return baseConfig

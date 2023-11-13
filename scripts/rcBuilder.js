@@ -57,4 +57,18 @@ module.exports = {
       ],
     }
   },
+  /**
+   * Generate yclirc config with type hints:)
+   * @param {object} config config to generate
+   * @param {string} config.outputDir base dir to output dist
+   * @param {string} config.pagesDir base dir to find pages
+   * @param {string} config.publicDir base dir for public assets to merge to output dir
+   */
+  buildYcliRC(config) {
+    const rs = {}
+    rs.pagesDir = config.pagesDir || 'pages'
+    rs.outputDir = config.outputDir || 'dist'
+    rs.publicDir = config.publicDir || 'public'
+    return rs
+  },
 }
