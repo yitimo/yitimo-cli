@@ -94,6 +94,7 @@
       "tsx": "never",
       "js": "never",
       "jsx": "never",
+      "vue": "always",
       "json": "always"
     }
   ],

@@ -2,6 +2,7 @@
     "compilerOptions": {
         "target": "ESNext",
         "module": "ESNext",
+        "moduleResolution": "Classic",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "sourceMap": true,
