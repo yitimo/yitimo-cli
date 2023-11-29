@@ -1,4 +1,7 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
+// import React from '@/vue2'
 import App from './App.vue'
 
-Vue.createApp(App).mount(document.getElementById('app')!)
+// React
+
+createApp(App).mount('#app')

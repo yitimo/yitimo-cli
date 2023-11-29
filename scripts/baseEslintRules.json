@@ -29,6 +29,7 @@
       "ArrayExpression": 1
     }
   ],
+  "react/react-in-jsx-scope": "off",
   "react/jsx-max-props-per-line": [
     "error",
     {

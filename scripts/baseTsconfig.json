@@ -1,18 +1,14 @@
 {
     "compilerOptions": {
         "target": "ESNext",
-        "module": "ESNext",
-        "moduleResolution": "Classic",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "lib": ["DOM"],
         "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
         "sourceMap": true,
         "declaration": false,
         "strict": true,
         "useUnknownInCatchVariables": false,
-        "jsx": "react",
-        "lib": [
-            "ESNext",
-            "DOM"
-        ]
+        "jsx": "react-jsx"
     }
 }

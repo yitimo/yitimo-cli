@@ -1,5 +1,7 @@
-import React from 'react'
+function Child() {
+  return <div>index</div>
+}
 
 export default function App() {
-  return (<div>Hello index</div>)
+  return (<div>Hello <Child /></div>)
 }
