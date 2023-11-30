@@ -1,7 +1,9 @@
+import style from './App.module.scss'
+
 function Child() {
-  return <div>index</div>
+  return <span className={style.child}>index</span>
 }
 
 export default function App() {
-  return (<div>Hello <Child /></div>)
+  return (<div className={style.app}>Hello <Child /></div>)
 }

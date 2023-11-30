@@ -34,54 +34,50 @@ function generateBaseConfig(options) {
       rules: [
         {
           test: /\.(js(x?))$/,
-          use: [{
-            loader: 'babel-loader',
-          }],
+          use: [
+            { loader: 'babel-loader' },
+          ],
           exclude: /node_modules/,
         },
         {
           test: /\.ts(x?)$/,
           exclude: /node_modules/,
           use: [
-            {
-              loader: 'babel-loader',
-            },
-            {
-              loader: 'ts-loader',
-              options: {
-                appendTsSuffixTo: [/\.vue$/],
-              },
-            },
+            { loader: 'babel-loader' },
+            { loader: 'ts-loader', options: { appendTsSuffixTo: [/\.vue$/] } },
           ],
         },
         {
           test: /\.vue$/,
-          use: [{
-            loader: 'vue-loader',
-            options: {
-              compilerOptions: {
-                preserveWhitespace: false,
-              },
-            },
-          }],
+          use: [
+            { loader: 'vue-loader', options: { compilerOptions: { preserveWhitespace: false } } },
+          ],
           exclude: /node_modules/,
         },
         {
-          test: /\.(css|less)$/,
+          test: /\.css$/,
           use: [
             isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                url: false,
-              },
-            },
-            {
-              loader: 'postcss-loader',
-            },
-            {
-              loader: 'less-loader',
-            },
+            { loader: 'css-loader', options: { url: false } },
+            { loader: 'postcss-loader' },
+          ],
+          exclude: /\.module\.css$/,
+        },
+        {
+          test: /\.module\.css$/,
+          use: [
+            isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+            { loader: 'css-loader', options: { url: false, modules: true } },
+            { loader: 'postcss-loader' },
+          ],
+        },
+        {
+          test: /\.less$/,
+          use: [
+            isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+            { loader: 'css-loader', options: { url: false } },
+            { loader: 'postcss-loader' },
+            { loader: 'less-loader' },
           ],
           exclude: /\.module\.less$/,
         },
@@ -89,19 +85,28 @@ function generateBaseConfig(options) {
           test: /\.module\.(css|less)$/,
           use: [
             isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                url: false,
-                modules: true,
-              },
-            },
-            {
-              loader: 'postcss-loader',
-            },
-            {
-              loader: 'less-loader',
-            },
+            { loader: 'css-loader', options: { url: false, modules: true } },
+            { loader: 'postcss-loader' },
+            { loader: 'less-loader' },
+          ],
+        },
+        {
+          test: /\.scss$/,
+          use: [
+            isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+            { loader: 'css-loader', options: { url: false } },
+            { loader: 'postcss-loader' },
+            { loader: 'sass-loader' },
+          ],
+          exclude: /\.module\.scss$/,
+        },
+        {
+          test: /\.module\.scss$/,
+          use: [
+            isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+            { loader: 'css-loader', options: { url: false, modules: true } },
+            { loader: 'postcss-loader' },
+            { loader: 'sass-loader' },
           ],
         },
       ],
@@ -109,7 +114,7 @@ function generateBaseConfig(options) {
     plugins: [
       ...pages.map((page) => new HtmlWebpackPlugin({
         template: page.template,
-        filename: page.filename,
+        filename: page.name === 'index' ? 'index.html' : `${page.name}/index.html`,
         chunks: [page.name],
         minify: false,
         inject: 'body',
@@ -140,8 +145,8 @@ function generateDevConfig() {
     mode: 'development',
     devtool: 'inline-source-map',
     output: {
-      filename: 'static/js/[name].js',
-      chunkFilename: 'static/js/[name].js',
+      filename: '[name]/js/[name].js',
+      chunkFilename: '[name]/js/[name].js',
     },
     plugins: [],
   }
@@ -153,13 +158,13 @@ function generateProdConfig() {
     mode: 'production',
     devtool: 'source-map',
     output: {
-      filename: 'static/js/[name].[contenthash].js',
-      chunkFilename: 'static/js/[name].[contenthash].js',
+      filename: '[name]/js/[name].[contenthash].js',
+      chunkFilename: '[name]/js/[name].[contenthash].js',
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: 'static/css/[name].[contenthash].css',
-        chunkFilename: 'static/css/[name].[contenthash].css',
+        filename: '[name]/css/[name].[contenthash].css',
+        chunkFilename: '[name]/css/[name].[contenthash].css',
       }),
     ],
     optimization: {

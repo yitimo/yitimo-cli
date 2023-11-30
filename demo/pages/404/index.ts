@@ -1,7 +1,8 @@
 import { createApp } from 'vue'
-// import React from '@/vue2'
 import App from './App.vue'
+import '../global.css'
+import './index.less'
 
-// React
+const app = createApp(App)
 
-createApp(App).mount('#app')
+app.mount('#app')
