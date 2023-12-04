@@ -19,15 +19,17 @@ module.exports = {
   getAppConfig() {
     try {
       let configPath = null
-      if (fs.existsSync(path.resolve('appconfig.json'))) {
-        // eslint-disable-next-line import/no-dynamic-require, global-require
-        configPath = require(path.resolve('appconfig.json'))
-      } else if (fs.existsSync(path.resolve('.appconfigrc.js'))) {
-        // eslint-disable-next-line import/no-dynamic-require, global-require
-        configPath = require(path.resolve('.appconfigrc.js'))
+      const configFileList = ['app.config.json', 'app.config.js', '.appconfigrc.js']
+      for (let i = 0; i < configFileList.length; i += 1) {
+        const name = configFileList[i]
+        if (fs.existsSync(path.resolve(name))) {
+          // eslint-disable-next-line import/no-dynamic-require, global-require
+          configPath = require(path.resolve(name))
+          break
+        }
       }
       if (!configPath) {
-        throw new Error('no app config found, please check is appconfig.json or .appconfigrc.js exists')
+        throw new Error(`no app config found, please check if [${configFileList.join('/')}] exists`)
       }
       return configPath
     } catch (e) {
